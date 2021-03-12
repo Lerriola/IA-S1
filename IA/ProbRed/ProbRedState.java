@@ -24,7 +24,7 @@ public class ProbRedState{
         Sens = new Sensores(nSens, seed);
         Cent = new CentrosDatos(nCent, seed);
 
-        iniSolution();
+        iniSolution(nSens, nCent);
     }
 
     public int SensSize(){
@@ -38,26 +38,27 @@ public class ProbRedState{
     private int countCONNEX(int id) {
         int counter = 0;
         for (int i = 0; i < DAG.size(); ++i) {
-            if (DAG[i] == id) counter++;
+            if (DAG.get(i) == id) counter++;
         }
         return counter;
     }
 
-    private int countDATA(int id){
+    private double countDATA(int id){
         double counter = 0;
         for (int j = 0; j < SensSize(); ++j) {
             if(j != id){
-                if(DAG[j] == id){
-                    counter += Sens[j].getCapacidad();
+                if(DAG.get(j) == id){
+                    counter += Sens.get(j).getCapacidad();
                 }
             }
         }
         return counter;
     }
 
-    private void iniSolution(){
+    private void iniSolution(int nSens, int nCent){
 
-        DAG = new ArrayList<Integer>(SensSize() + CentSize());
+        DAG = new ArrayList<Integer>(nSens + nCent);
+
         boolean menor3 = true;
         boolean menor25 = true;
 
@@ -74,15 +75,15 @@ public class ProbRedState{
                 if(RI < SensSize()){
                     while(menor3) {
                         if (countCONNEX(RI) < 3) { // Comprobamos que el sensor i no tenga más de 3 connex.
-                            DAG[i] = RI;
-                            menor3 = false
+                            DAG.set(i, RI);
+                            menor3 = false;
                         } else RI = rand.nextInt(SensSize() + CentSize());
                     }
                 }
                 else{
                     while(menor25) {
                         if (countCONNEX(RI) < 25) { // Comprobamos que el sensor i no tenga más de 3 connex.
-                            DAG[i] = RI;
+                            DAG.set(i, RI);
                             menor25 = false;
                         }
                         else RI =  rand.nextInt(SensSize() + CentSize());
@@ -94,7 +95,7 @@ public class ProbRedState{
 
     public void PrintRed(){
         for(int i = 0; i < DAG.size(); ++i){
-            System.out.println(i + " apunta a " + DAG[i] + "//" );
+            System.out.println(i + " apunta a " + DAG.get(i) + "//" );
         }
     }
 
