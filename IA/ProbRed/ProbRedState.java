@@ -24,7 +24,7 @@ public class ProbRedState{
         Sens = new Sensores(nSens, seed);
         Cent = new CentrosDatos(nCent, seed);
 
-        iniSolution(nSens, nCent);
+        iniSolution1(nSens, nCent);
     }
 
     public int SensSize(){
@@ -55,43 +55,27 @@ public class ProbRedState{
         return counter;
     }
 
-    private void iniSolution(int nSens, int nCent){
+    private void iniSolution1(int nSens, int nCent){
+        DAG = new ArrayList<Integer>(nSens+nCent);
+
+        int aux1 = nSens;
+        for(int i = 0; i < nCent; ++i){
+            DAG.set(i,aux1);
+            ++aux1;
+        }
+        for(int j = nCent; j < DAG.size(); ++j){
+            if(j == nSens - 1)DAG.set(j,0);
+            else  DAG.set(j,j+1);
+        }
+    }
+
+    /*private void iniSolution2(int nSens, int nCent){
 
         DAG = new ArrayList<Integer>(nSens + nCent);
 
-        boolean menor3 = true;
-        boolean menor25 = true;
 
-        Random rand = new Random();
-
-
-        for(int i = 0; i < SensSize(); ++i) {
-            menor3 = true;
-            menor25 = true;
-            // Generamos un int random
-            int RI = rand.nextInt(SensSize() + CentSize());
-
-            if (i != RI) {
-                if(RI < SensSize()){
-                    while(menor3) {
-                        if (countCONNEX(RI) < 3) { // Comprobamos que el sensor i no tenga más de 3 connex.
-                            DAG.set(i, RI);
-                            menor3 = false;
-                        } else RI = rand.nextInt(SensSize() + CentSize());
-                    }
-                }
-                else{
-                    while(menor25) {
-                        if (countCONNEX(RI) < 25) { // Comprobamos que el sensor i no tenga más de 3 connex.
-                            DAG.set(i, RI);
-                            menor25 = false;
-                        }
-                        else RI =  rand.nextInt(SensSize() + CentSize());
-                    }
-                }
-            }
-        }
     }
+    */
 
     public void PrintRed(){
         for(int i = 0; i < DAG.size(); ++i){
