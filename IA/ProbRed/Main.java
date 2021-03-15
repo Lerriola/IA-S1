@@ -15,6 +15,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
+        System.out.println("");
         ProbRedState pb = new ProbRedState(10, 2, 1234);
         pb.PrintRed();
 
