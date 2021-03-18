@@ -16,8 +16,10 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         System.out.println("");
-        ProbRedState pb = new ProbRedState(400, 2, 1234);
-        pb.PrintRed();
+        ProbRedState pb = new ProbRedState(10, 2, 10887);
+        ProbRedHeuristicFunction H = new ProbRedHeuristicFunction();
+        pb.printInfo();
+        System.out.println(H.getHeuristicValue(pb));
 
     }
 }

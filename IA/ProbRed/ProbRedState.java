@@ -7,9 +7,6 @@ import IA.Red.Sensores;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Created by bejar on 17/01/17.
- */
 public class ProbRedState{
 
     // ATRIBUTES
@@ -51,6 +48,16 @@ public class ProbRedState{
     public int SensSize(){
         return Sens.size();
     }
+
+    public double getCapacity(int i) { return Sens.get(i).getCapacidad(); }
+
+    public void printInfo(){
+        for(int i = 0; i < SensSize(); ++i){
+            System.out.println(Sens.get(i).getCapacidad() + " " + Sens.get(i).getCoordX() + " " + Sens.get(i).getCoordY());
+
+        }
+    }
+
 
     public int CentSize(){
         return Cent.size();
@@ -157,6 +164,10 @@ public class ProbRedState{
                 while (!ConectedTOSensor);
             }
         }
+    }
+
+    private double cost(int A, int B){
+        double
     }
 
     public void changeConexion(int i, int New){
