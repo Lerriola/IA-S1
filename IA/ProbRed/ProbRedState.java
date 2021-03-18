@@ -167,7 +167,12 @@ public class ProbRedState{
     }
 
     private double cost(int A, int B){
-        double
+        double pA = Sens.get(A).getCoordX() - Sens.get(A).getCoordY();
+        pA = pA * pA;
+        double pB = Sens.get(B).getCoordX() - Sens.get(B).getCoordY();
+        pB = pB * pB;
+        double d = pA + pB;
+        return d * Sens.get(A).getCapacidad();
     }
 
     public void changeConexion(int i, int New){
