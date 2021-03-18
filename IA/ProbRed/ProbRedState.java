@@ -20,16 +20,26 @@ public class ProbRedState{
 
     //Adjaceny List
     private ArrayList<Integer> DAG; //LAS PRIMERAS POSICIONES SON SENSORES, LAS ULTIMAS SON CENTROS DE DATOS
+    private int[] counter;
 
     // CONSTRUCTORS
     public ProbRedState(int nSens, int nCent, int seed) {
+
         Sens = new Sensores(nSens, seed);
         Cent = new CentrosDatos(nCent, seed);
+
         DAG = new ArrayList<Integer>(nSens+nCent);
-        IniDAG(nSens+nCent);
-        System.out.println("Size antes de iniSolution: " + DAGSize());
-        iniSolution2(nSens, nCent);
-        System.out.println("Size después de iniSolution: " + DAGSize());
+        counter = new int[nSens + nCent];
+
+        IniDAG(nCent+nSens);
+        iniSolution2(nSens,nCent);
+    }
+
+    public ProbRedState(ProbRedState original) {
+        for (int i = 0; i < original.SensSize(); i++) {
+            DAG.set(i, original.DAG.get(i));
+            counter[i] = original.counter[i];
+        }
     }
 
     private void IniDAG(int n){
@@ -42,22 +52,31 @@ public class ProbRedState{
         return Sens.size();
     }
 
-    public int  CentSize(){
+    public int CentSize(){
         return Cent.size();
     }
 
     public int DAGSize() { return DAG.size();}
 
-    private boolean Cicles(int sensID) {
+    public boolean Cicles(int sensID) {
+
+        int[] visited = new int[SensSize()+CentSize()];
+        for (int i = 0; i < visited.length; i++) {
+            visited[i] = 0;
+        }
+
+        visited[sensID] = 1;
+
         int nxt = DAG.get(sensID);
         while (nxt < Sens.size()) {
+            visited[nxt] = 1;
             nxt = DAG.get(nxt);
-            if (nxt == sensID) return true;
+            if (visited[nxt] == 1) return true;
         }
         return false;
     }
 
-    private int CiclesGeneral() {
+    public int CiclesGeneral() {
         for (int i = 0; i < Sens.size(); ++i) {
             if (Cicles(i)) return i;
         }
@@ -102,7 +121,6 @@ public class ProbRedState{
         DAG = new ArrayList<Integer>(nSens + nCent);
         IniDAG(nSens+nCent);
 
-        int[] counter = new int[nSens + nCent];
         boolean CentroEmpty = true;
         for (int i = 0; i < nSens; ++i) {
             if (CentroEmpty){
@@ -141,8 +159,13 @@ public class ProbRedState{
         }
     }
 
-    private void changeConexion(int i, int New){
+    public void changeConexion(int i, int New){
         DAG.set(i,New);
+    }
+
+    public boolean maxCapacity(int pos){
+        if(pos < this.SensSize()) return counter[pos] < 3;
+        else return counter[pos] < 25;
     }
 
 
