@@ -5,9 +5,6 @@ import aima.search.framework.SuccessorFunction;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by bejar on 17/01/17
- */
 public class ProbRedSuccesorFunctionH implements SuccessorFunction {
 
     public List getSuccessors(Object state){
@@ -26,7 +23,5 @@ public class ProbRedSuccesorFunctionH implements SuccessorFunction {
             }
         }
         return retval;
-
     }
-
 }

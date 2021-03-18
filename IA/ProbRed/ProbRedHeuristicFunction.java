@@ -12,7 +12,9 @@ public class ProbRedHeuristicFunction implements HeuristicFunction {
 
         ProbRedState board = (ProbRedState)n;
         int data = 0;
-        for(int i = 0; i < board.S)
+        for(int i = 0; i < board.SensSize(); ++i){
+            data += board[i].
+        }
         //return ((ProbRedState) n).heuristic();
         return 1.0;
     }
