@@ -1,7 +1,0 @@
-{
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "c:\\Users\\zsun2\\Desktop\\IA-S1\\AIMA.jar",
-        "c:\\Users\\zsun2\\Desktop\\IA-S1\\RedSensores.jar"
-    ]
-}

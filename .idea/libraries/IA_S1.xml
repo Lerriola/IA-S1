@@ -2,7 +2,6 @@
   <library name="IA-S1">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/AIMA.jar!/" />
-      <root url="jar://$PROJECT_DIR$/redsensores.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

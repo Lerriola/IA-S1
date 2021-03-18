@@ -28,7 +28,7 @@ public class ProbRedState{
         DAG = new ArrayList<Integer>(nSens+nCent);
         IniDAG(nSens+nCent);
         System.out.println("Size antes de iniSolution: " + DAGSize());
-        iniSolution1(nSens, nCent);
+        iniSolution2(nSens, nCent);
         System.out.println("Size después de iniSolution: " + DAGSize());
     }
 
@@ -104,7 +104,6 @@ public class ProbRedState{
 
         int[] counter = new int[nSens + nCent];
         boolean CentroEmpty = true;
-        int ConectToSensors = 0;
         for (int i = 0; i < nSens; ++i) {
             if (CentroEmpty){
                 int j = 0;
@@ -124,7 +123,6 @@ public class ProbRedState{
                     CentroEmpty = false;
                     DAG.set(i,0);
                     ++counter[0];
-                    ConectToSensors = i-1;
                 }
             }
             else {
@@ -138,7 +136,7 @@ public class ProbRedState{
                     }
                     else ++j2;
                 }
-                while (!ConectedTOSensor && j2 < ConectToSensors);
+                while (!ConectedTOSensor);
             }
         }
     }
