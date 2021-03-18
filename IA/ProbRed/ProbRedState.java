@@ -172,7 +172,7 @@ public class ProbRedState{
         double pB = Sens.get(B).getCoordX() - Sens.get(B).getCoordY();
         pB = pB * pB;
         double d = pA + pB;
-        return d * Sens.get(A).getCapacidad();
+        return d *  //DATOS TRANSMITIDOS, AUN POR CALCULAR//Sens.get(A).getCapacidad();
     }
 
     public void changeConexion(int i, int New){
