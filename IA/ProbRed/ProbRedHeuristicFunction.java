@@ -17,6 +17,6 @@ public class ProbRedHeuristicFunction implements HeuristicFunction {
 
         //return ((ProbRedState) n).heuristic();
 
-        return data;
+        return cost - data;
     }
 }

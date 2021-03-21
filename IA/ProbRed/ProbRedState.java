@@ -18,6 +18,7 @@ public class ProbRedState{
     //Adjaceny List
     private ArrayList<Integer> DAG; //LAS PRIMERAS POSICIONES SON SENSORES, LAS ULTIMAS SON CENTROS DE DATOS
     private int[] counter;
+    private ArrayList<Double> DAGData; // GUARDA PARA CADA SENSOR LOS DATOS QUE TIENE ALMACENADOS, INCLUYENDO LOS QUE RECUBE DE SUS CONEXIONES
 
     // CONSTRUCTORS
     public ProbRedState(int nSens, int nCent, int seed) {
@@ -27,9 +28,11 @@ public class ProbRedState{
 
         DAG = new ArrayList<Integer>(nSens+nCent);
         counter = new int[nSens + nCent];
+        DAGData = new ArrayList<Double>(nSens+nCent);
 
         IniDAG(nCent+nSens);
-        iniSolution2(nSens,nCent);
+        IniDAGData(nCent+nSens);
+        iniSolution1(nSens,nCent);
     }
 
     public ProbRedState(ProbRedState original) {
@@ -42,6 +45,12 @@ public class ProbRedState{
     private void IniDAG(int n){
         for(int i = 0; i < n; ++i){
             DAG.add(i,-1);
+        }
+    }
+
+    private void IniDAGData(int n){
+        for(int i = 0; i < n; ++i) {
+            DAGData.add(i,0.0);
         }
     }
 
@@ -64,6 +73,7 @@ public class ProbRedState{
     }
 
     public int DAGSize() { return DAG.size();}
+    public int DAGDataSize(){ return DAGData.size();}
 
     public boolean Cicles(int sensID) {
 
@@ -90,13 +100,15 @@ public class ProbRedState{
         return -1;
     }
 
-    private int countCONNEX(int id) {
-        int counter = 0;
+    private ArrayList<Integer> NodeParents(int id) {
+        ArrayList<Integer> daddy = null;
         for (int i = 0; i < DAG.size(); ++i) {
-            if (DAG.get(i) == id) counter++;
+            if (DAG.get(i) == id) daddy.add(i);
         }
-        return counter;
+        return daddy;
     }
+
+
 
     private double countDATA(int id){
         double counter = 0;
@@ -114,19 +126,73 @@ public class ProbRedState{
 
         int aux1 = nSens;
         for(int i = 0; i < nCent; ++i){
-            DAG.set(i,aux1);
+            DAG.set(i, aux1);
             ++aux1;
+            double capacidadI = Sens.get(i).getCapacidad();
+            DAGData.set(i, capacidadI);
+            DAGData.set(nSens+i, capacidadI);
         }
+
         for(int j = nCent; j < DAG.size() - nCent; ++j){
-            if(j + 1 == nSens )DAG.set(j,0);
-            else  DAG.set(j,j+1);
+            if (j+1 == nSens) { // last sensor
+                DAG.set(j,0);
+                double capacity = Sens.get(j).getCapacidad();
+                double dataInput = DAGData.get(j-1);
+                DAGData.set(j, Double.min(3*capacity, capacity+dataInput));
+            }
+            else {
+                double capacity = Sens.get(j).getCapacidad();
+
+                double dataInput = 0;
+                if (j != nCent) dataInput = DAGData.get(j-1);
+
+                DAGData.set(j, Double.min(3*capacity, capacity+dataInput));
+
+                DAG.set(j, j+1);
+            }
+
         }
+        double capacity = Sens.get(0).getCapacidad();
+        double dataInput = DAGData.get(nSens-1);
+        DAGData.set(0, Double.min(3*capacity, capacity+dataInput));
+        DAGData.set(nSens, Double.min(150, DAGData.get(0)));
     }
+
+
+    private double dataCalc(int k){
+        if(DAGData.get(k) != 0) return DAGData.get(k);
+        else dataCalculation(k);
+        return DAGData.get(k);
+    }
+
+    private void dataCalculation(int i) {
+        if(NodeParents(i) == null) {
+            DAGData.add(i, Sens.get(i).getCapacidad());
+        }
+            else {
+                ArrayList parents = NodeParents(i);
+                for(int k = 0; k < parents.size(); ++k){
+                    DAGData.add(i,DAGData.get(i) + dataCalc(k));
+                    if(DAGData.get(i) >  3*Sens.get(i).getCapacidad()) {
+                        DAGData.set(i, 3 * Sens.get(i).getCapacidad());
+                        k = parents.size();
+                    }
+                }
+            }
+        }
+
 
     private void iniSolution2(int nSens, int nCent){
 
         DAG = new ArrayList<Integer>(nSens + nCent);
         IniDAG(nSens+nCent);
+
+        DAGData = new ArrayList<Double>(nSens + nCent);
+        IniDAGData(nSens+nCent);
+        for(int m = nSens; m < DAGData.size(); ++m){
+            dataCalculation(m);
+            if(DAGData.get(m) > 150) DAGData.set(m,150.0);
+        }
 
         boolean CentroEmpty = true;
         for (int i = 0; i < nSens; ++i) {
@@ -165,7 +231,7 @@ public class ProbRedState{
             }
         }
     }
-
+/*
     private double cost(int A, int B){
         double pA = Sens.get(A).getCoordX() - Sens.get(A).getCoordY();
         pA = pA * pA;
@@ -174,7 +240,7 @@ public class ProbRedState{
         double d = pA + pB;
         return d *  //DATOS TRANSMITIDOS, AUN POR CALCULAR//Sens.get(A).getCapacidad();
     }
-
+*/
     public void changeConexion(int i, int New){
         DAG.set(i,New);
     }
@@ -189,6 +255,10 @@ public class ProbRedState{
         for(int i = 0; i < DAG.size(); ++i){
             System.out.println(i + " -----> " + DAG.get(i));
         }
+    }
+
+    public void PrintData(){
+        for(int i = 0; i < DAGData.size(); ++i) System.out.println(i + "------->" + DAGData.get(i));
     }
 
     /* Class independent from AIMA classes

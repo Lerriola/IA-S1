@@ -17,9 +17,10 @@ public class Main {
 
         System.out.println("");
         ProbRedState pb = new ProbRedState(10, 2, 10887);
-        ProbRedHeuristicFunction H = new ProbRedHeuristicFunction();
+        //ProbRedHeuristicFunction H = new ProbRedHeuristicFunction();
         pb.printInfo();
-        System.out.println(H.getHeuristicValue(pb));
+        pb.PrintData();
+        //System.out.println(H.getHeuristicValue(pb));
 
     }
 }
