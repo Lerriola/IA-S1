@@ -9,18 +9,24 @@ public class ProbRedSuccesorFunctionH implements SuccessorFunction {
 
     public List getSuccessors(Object state){
 
+
+
         ArrayList retval = new ArrayList();
         ProbRedState Estado = (ProbRedState) state;
 
         for(int i = 0; i < Estado.SensSize(); i++){
-            ProbRedState new_state = new ProbRedState(Estado);
             for (int j = 0; j < Estado.DAGSize(); ++j){
-                if(i != j && !new_state.maxCapacity(j)) {
-                    new_state.changeConexion(i,j);
-                    if(!new_state.Cicles(i))
-                        retval.add(new Successor("change "+ i + " " + j, new_state));
+                ProbRedState new_state = new ProbRedState(Estado);
+                if(i != j && new_state.maxCapacity(j)) {
+                    boolean tecicles = new_state.changeConexion(i,j);
+                    if(!tecicles) {
+                        //new_state.PrintDAGData();
+                        retval.add(new Successor(new_state.CHANGE + " " + i + " " + j, new_state));
+                        //System.out.println(new_state.CHANGE + " " + i + " " + j);
+                    }
                 }
             }
+
         }
         return retval;
     }

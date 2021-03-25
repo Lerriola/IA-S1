@@ -1,3 +1,4 @@
+package ProbRed;
 
 import ProbRed.*;
 
@@ -6,6 +7,7 @@ import aima.search.framework.Problem;
 import aima.search.framework.Search;
 import aima.search.framework.SearchAgent;
 import aima.search.informed.AStarSearch;
+import aima.search.informed.HillClimbingSearch;
 import aima.search.informed.IterativeDeepeningAStarSearch;
 import java.util.Iterator;
 import java.util.List;
@@ -17,21 +19,41 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        Random r = new Random();
-        int randomseed = r.nextInt(9999);
+        //Random r = new Random();
+        //int randomseed = r.nextInt(9999);
+        //int seed = randomseed;
+        //seed = 1234;
+        ProbRedState pb = new ProbRedState(100, 4, 1234, 4321);
 
-        int seed = randomseed;
-        //int seed = 123;
-        //System.out.println("========= Seed: " + seed);
+        // Create the Problem object
+        Problem p = new  Problem(pb,
+                new ProbRedSuccesorFunctionH(),
+                new ProbRedGoalTest(),
+                new ProbRedHeuristicFunction());
 
-        ProbRedState pb = new ProbRedState(34, 1, seed);
-        //ProbRedHeuristicFunction H = new ProbRedHeuristicFunction();
-        //System.out.println("========= Sensors: ");
-        pb.printInfo();
-        pb.PrintRed();
-        //System.out.println("========= Data sent: ");
-        pb.PrintData();
-        //System.out.println(H.getHeuristicValue(pb));
+        Search alg = new HillClimbingSearch();
+        SearchAgent agent = new SearchAgent(p, alg);
+        // We print the results of the search
+        System.out.println();
+        printActions(agent.getActions());
+        printInstrumentation(agent.getInstrumentation());
+        // You can access also to the goal state using the
+        // method getGoalState of class Search
+    }
 
+    private static void printInstrumentation(Properties properties) {
+        Iterator keys = properties.keySet().iterator();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            String property = properties.getProperty(key);
+            System.out.println(key + " : " + property);
+        }
+    }
+
+    private static void printActions(List actions) {
+        for (int i = 0; i < actions.size(); i++) {
+            String action = (String) actions.get(i);
+            System.out.println(action);
+        }
     }
 }
