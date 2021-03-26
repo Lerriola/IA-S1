@@ -1,6 +1,6 @@
-package ProbRed;
+package IA.ProbRed;
 
-import ProbRed.*;
+import IA.ProbRed.*;
 
 import aima.search.framework.GraphSearch;
 import aima.search.framework.Problem;
@@ -21,8 +21,6 @@ public class Main {
 
         //Random r = new Random();
         //int randomseed = r.nextInt(9999);
-        //int seed = randomseed;
-        //seed = 1234;
         ProbRedState pb = new ProbRedState(100, 4, 1234, 4321);
 
         // Create the Problem object
@@ -32,13 +30,19 @@ public class Main {
                 new ProbRedHeuristicFunction());
 
         Search alg = new HillClimbingSearch();
+        long start = System.currentTimeMillis();
         SearchAgent agent = new SearchAgent(p, alg);
-        // We print the results of the search
+        long end = System.currentTimeMillis();
+        long elapsedTime = end - start;
         System.out.println();
+        // We print the results of the search
         printActions(agent.getActions());
         printInstrumentation(agent.getInstrumentation());
         // You can access also to the goal state using the
         // method getGoalState of class Search
+        System.out.println();
+        System.out.println("Elapsed time " + elapsedTime);
+        System.out.println();
     }
 
     private static void printInstrumentation(Properties properties) {

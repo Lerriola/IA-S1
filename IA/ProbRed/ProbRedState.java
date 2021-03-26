@@ -1,4 +1,4 @@
-package ProbRed;
+package IA.ProbRed;
 
 
 import IA.Red.CentrosDatos;
@@ -195,7 +195,7 @@ public class ProbRedState{
                 x2 = Sens.get(DAG.get(i)).getCoordX();
                 y2 = Sens.get(DAG.get(i)).getCoordY();
             }
-            double dist = (x1-y1)*(x1-y1) + (x2-y2)*(x2-y2);
+            double dist = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
             cost += (dist*DAGData.get(i));
         }
         return cost;
@@ -281,6 +281,12 @@ public class ProbRedState{
             aux = dataCalculation(m);
     }
 
+    public double totalData() {
+        double counter = 0;
+        for (int j = 0; j < SensSize(); ++j)
+            counter += Sens.get(j).getCapacidad();
+        return counter;
+    }
 
     private void updateOldPath(int i) {
         // Update old
@@ -369,7 +375,7 @@ public class ProbRedState{
 
     public void PrintDAGData() {
         System.out.print("DAGData: [");
-        for (int i = 0; i < SensSize(); i++) {
+        for (int i = SensSize(); i < DAGData.size(); i++) {
             String s = i == 0 ? "" + DAGData.get(i) : ", " + DAGData.get(i);
             System.out.print(s);
         }

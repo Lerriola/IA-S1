@@ -1,4 +1,4 @@
-package ProbRed;
+package IA.ProbRed;
 
 import aima.search.framework.GoalTest;
 
