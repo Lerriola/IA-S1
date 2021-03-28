@@ -260,7 +260,7 @@ public class ProbRedState{
         updateNewPath(i, New);
         return false;
     }
-
+/*
     public boolean swapConexion(int S1, int S2, int S3, int S4 ){
         updateOldPath(S1);
         updateOldPath(S3);
@@ -274,7 +274,20 @@ public class ProbRedState{
         updateNewPath(S3,S2);
         return false;
     }
-
+*/
+    public boolean swapConexion(int s1,int s2){
+        updateOldPath(s1);
+        updateOldPath(s2);
+        int aux1 = DAG.get(s2);
+        int aux2 = DAG.get(s1);
+        DAG.set(s1,aux1);
+        boolean tecicles = Cicles(s1);
+        boolean tecicles2 = Cicles(s2);
+        if(tecicles || tecicles2)return true;
+        updateNewPath(s1,aux1);
+        updateNewPath(s2,aux2);
+        return false;
+    }
     public void UpdateALL() {
         double aux = 0;
         for (int m = SensSize(); m < DAGSize(); ++m)
@@ -308,38 +321,81 @@ public class ProbRedState{
             DAGData.set(OldSensor, Double.min(3 * cap, oldData + cap));
 
             while (k < Sens.size()) {
-                if (DAG.get(k) >= Sens.size()) datalast = DAGData.get(k);
+                if (DAG.get(k) >= Sens.size()) datalast = DAGData.get(k); //ULTIMO SENSOR
+                Queue<Integer>Parents = NodeParents(k);
+                double data = Sens.get(k).getCapacidad();
+                while (!Parents.isEmpty()) {
+                    /*double capacity = Sens.get(k).getCapacidad(); //CAPACIDAD DEL ULTIMO SENSOR
+                    double dataInput = DAGData.get(OldSensor); //CONTENIDO DEL SENSOR QUE ES HIJO DEL QUE HEMOS MODIFICADO
+                    DAGData.set(k, Double.min(3 * capacity, capacity + dataInput));
+                    OldSensor = k;
+                    k = DAG.get(k);*/
+                    Integer q = Parents.peek();
+                    Parents.poll();
+                    data += DAGData.get(q);
+                }
                 double capacity = Sens.get(k).getCapacidad();
-                double dataInput = DAGData.get(OldSensor);
-                DAGData.set(k, Double.min(3 * capacity, capacity + dataInput));
+                DAGData.set(k, Double.min(3 * capacity, data));
                 OldSensor = k;
                 k = DAG.get(k);
+
             }
             // Update old center
-            double diff = DAGData.get(OldSensor) - datalast;
-            DAGData.set(k, DAGData.get(k) + diff);
+            //double diff = datalast - DAGData.get(OldSensor);
+            Queue<Integer> pp = NodeParents(k);
+            double dTot = 0.;
+            while(!pp.isEmpty()){
+                Integer o = pp.peek();
+                pp.poll();
+                dTot += DAGData.get(o);
+            }
+            DAGData.set(k, dTot);
         }
         else DAGData.set(OldSensor, Double.min(150,DAGData.get(OldSensor)-DAGData.get(i)));
     }
+
+
 
     private void updateNewPath(int i, int New){
         // Update new
         double datalast = 0;
         ++counter[New];
         // No apunta a centro
-        while (New < Sens.size()) {
+        int aux = New;
+        int antaux = i;
+        while (aux < Sens.size()) {
             //System.out.println("AM STUCK");
-            if (DAG.get(New) >= Sens.size()) datalast = DAGData.get(New);
-            double capacity = Sens.get(New).getCapacidad();
+            if (DAG.get(aux) >= Sens.size()) datalast = DAGData.get(aux);
+            Queue<Integer> Parents = NodeParents(aux);
+            double data = Sens.get(aux).getCapacidad();
+            while(!Parents.isEmpty()) {
+           /* double capacity = Sens.get(New).getCapacidad();
             double dataInput = DAGData.get(i);
             DAGData.set(New, Double.min(3*capacity, DAGData.get(New)+dataInput));
             i = New;
-            New = DAG.get(New);
+            New = DAG.get(New);*/
+                Integer q = Parents.peek();
+                Parents.poll();
+                data += DAGData.get(q);
+            }
+            double capacity = Sens.get(aux).getCapacidad();
+            DAGData.set(aux, Double.min(3*capacity, data));
+            antaux = aux;
+            aux = DAG.get(aux);
+
         }
         // Update new center
-        double diff2 = DAGData.get(i) - datalast; // 0 or positive
-        DAGData.set(New, Double.min(150,DAGData.get(New)+diff2));
+        Queue<Integer> pp = NodeParents(aux);
+        double dTot = 0.;
+        while(!pp.isEmpty()){
+            Integer o = pp.peek();
+            pp.poll();
+            dTot += DAGData.get(o);
+        }
+        DAGData.set(aux, dTot);
     }
+
+
 
     public boolean maxCapacity(int pos){
         if(pos < this.SensSize()) return counter[pos] < 3;

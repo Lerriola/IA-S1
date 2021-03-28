@@ -6,7 +6,7 @@ public class ProbRedHeuristicFunction implements HeuristicFunction {
 
     public double getHeuristicValue(Object n){
 
-        double Lmda = 0.4;
+        double Lmda = 0.9;
 
         ProbRedState board = (ProbRedState) n;
 
@@ -16,12 +16,14 @@ public class ProbRedHeuristicFunction implements HeuristicFunction {
         Double actualData = board.getDataCenters();
         Double lostData = totalData-actualData;
 
-        Double HeurVal1 = (1-Lmda) * coste + Lmda * lostData;
+        Double HeurVal1 =  coste -  actualData;
 
-        Double HeurVal2 = coste / totalData;
-        //System.out.println("Datos: " + Datos + " Coste: " + coste + " - Heur: " + HeurVal);
-        //System.out.println("Data: " + actualData + "/" + totalData);
+        Double HeurVal2 = coste / actualData;
+        //System.out.println( " Coste: " + coste /*+ " - Heur: " + HeurVal2*/);
+       // System.out.println("Data: " + actualData + "/" + totalData);
         //board.PrintDAGData();
+        //System.out.println("Porcentaje de datos recogidos: " + (actualData/totalData)*100.);
+
         
         return HeurVal2;
     }
