@@ -20,6 +20,10 @@ public class ProbRedState{
     private int[] counter;
     private ArrayList<Double> DAGData; // GUARDA PARA CADA SENSOR LOS DATOS QUE TIENE ALMACENADOS, INCLUYENDO LOS QUE RECUBE DE SUS CONEXIONES
 
+    static Double costeFinal = -1.0;
+    static Double lossDataPerc = -1.0;
+
+
     // CONSTRUCTORS
     public ProbRedState(int nSens, int nCent, int SenSeed, int CentSeed) {
 
@@ -442,5 +446,18 @@ public class ProbRedState{
             System.out.print("   Y:" + Cent.get(i-SensSize()).getCoordY());
             System.out.println();
         }
+    }
+
+    public void updateResults(Double c, Double l) {
+        costeFinal = c;
+        lossDataPerc = l;
+    }
+
+    public Double getcosteFinal() {
+        return costeFinal;
+    }
+
+    public Double getlossDataPerc() {
+        return lossDataPerc;
     }
 }

@@ -13,13 +13,13 @@ public class ProbRedSuccesorFunctionH implements SuccessorFunction {
         ProbRedState Estado = (ProbRedState) state;
 
         for(int i = 0; i < Estado.SensSize(); i++){
-            for (int j = 0; j < Estado.DAGSize(); ++j){
+            for (int j = 0; j < Estado.SensSize(); ++j){
                 ProbRedState new_state = new ProbRedState(Estado);
                 if(i != j && new_state.maxCapacity(j)) {
-                    boolean tecicles = new_state.changeConexion(i,j);
+                    boolean tecicles = new_state.swapConexion(i,j);
                     if(!tecicles) {
                         //new_state.PrintDAGData();
-                        retval.add(new Successor(new_state.CHANGE + " " + i + " " + j, new_state));
+                        retval.add(new Successor(new_state.SWAP + " " + i + " " + j, new_state));
                         //System.out.println(new_state.CHANGE + " " + i + " " + j);
                     }
                 }

@@ -23,10 +23,9 @@ public class ProbRedHeuristicFunction implements HeuristicFunction {
        // Double HeurVal1 =  lostData + 0.0007*coste;
 
         Double HeurVal2 = coste / actualData;
-        System.out.println( " Coste: " + coste /*+ " - Heur: " + HeurVal1*/);
-        //System.out.println("Data: " + actualData + "/" + totalData);
-        //board.PrintDAGData();
-        System.out.println("Porcentaje de datos perdidos: " + (100 - (actualData/totalData)*100.));
+
+        Double l = (1-(actualData/totalData))*100;
+        board.updateResults(coste, l);
 
         
         return HeurVal1;

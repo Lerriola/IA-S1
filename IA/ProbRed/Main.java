@@ -9,6 +9,8 @@ import aima.search.framework.SearchAgent;
 import aima.search.informed.AStarSearch;
 import aima.search.informed.HillClimbingSearch;
 import aima.search.informed.IterativeDeepeningAStarSearch;
+import aima.search.informed.SimulatedAnnealingSearch;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -20,28 +22,32 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Random r = new Random();
         int randomseed = r.nextInt(9999);
-        ProbRedState pb = new ProbRedState(100, 4, randomseed, randomseed);
+        ProbRedState pb = new ProbRedState(100, 4, randomseed+49999912, randomseed+215546623);
 
         // Create the Problem object
         Problem p = new  Problem(pb,
-                new ProbRedSuccesorFunctionH(),
+                new ProbRedSuccesorFunctionS(),
                 new ProbRedGoalTest(),
                 new ProbRedHeuristicFunction());
 
-        Search alg = new HillClimbingSearch();
-        long start = System.currentTimeMillis();
+        //Search alg = new HillClimbingSearch();
+        Search alg = new SimulatedAnnealingSearch(10000,1000,5,3);
+
+        //long start = System.currentTimeMillis();
         SearchAgent agent = new SearchAgent(p, alg);
-        long end = System.currentTimeMillis();
-        long elapsedTime = end - start;
+        //long end = System.currentTimeMillis();
+        //long elapsedTime = end - start;
         System.out.println();
         // We print the results of the search
-        printActions(agent.getActions());
-        printInstrumentation(agent.getInstrumentation());
+        //printActions(agent.getActions());
+        //printInstrumentation(agent.getInstrumentation());
         // You can access also to the goal state using the
         // method getGoalState of class Search
-        System.out.println();
-        System.out.println("Elapsed time " + elapsedTime);
-        System.out.println();
+        //System.out.println();
+        //System.out.println("Elapsed time " + elapsedTime);
+        //System.out.println();
+        System.out.println("Coste final: " + pb.getcosteFinal());
+        System.out.println("Datos perdidos: " + pb.getlossDataPerc() + " %");
     }
 
     private static void printInstrumentation(Properties properties) {
