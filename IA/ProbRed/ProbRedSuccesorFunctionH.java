@@ -9,8 +9,6 @@ public class ProbRedSuccesorFunctionH implements SuccessorFunction {
 
     public List getSuccessors(Object state){
 
-
-
         ArrayList retval = new ArrayList();
         ProbRedState Estado = (ProbRedState) state;
 
@@ -26,7 +24,6 @@ public class ProbRedSuccesorFunctionH implements SuccessorFunction {
                     }
                 }
             }
-
         }
         return retval;
     }

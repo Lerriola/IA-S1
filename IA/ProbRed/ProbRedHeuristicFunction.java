@@ -16,15 +16,19 @@ public class ProbRedHeuristicFunction implements HeuristicFunction {
         Double actualData = board.getDataCenters();
         Double lostData = totalData-actualData;
 
-        Double HeurVal1 =  coste -  actualData;
+        double lambda = 99.92; // VALOR ALTO IMPLICA PRIORIZAR QUE SE CAPTUREN EL MAXIMO DE DATOS
+
+        Double HeurVal1 =  coste*(100-lambda) -  actualData*lambda;
+
+       // Double HeurVal1 =  lostData + 0.0007*coste;
 
         Double HeurVal2 = coste / actualData;
-        //System.out.println( " Coste: " + coste /*+ " - Heur: " + HeurVal2*/);
-       // System.out.println("Data: " + actualData + "/" + totalData);
+        System.out.println( " Coste: " + coste /*+ " - Heur: " + HeurVal1*/);
+        //System.out.println("Data: " + actualData + "/" + totalData);
         //board.PrintDAGData();
-        //System.out.println("Porcentaje de datos recogidos: " + (actualData/totalData)*100.);
+        System.out.println("Porcentaje de datos perdidos: " + (100 - (actualData/totalData)*100.));
 
         
-        return HeurVal2;
+        return HeurVal1;
     }
 }

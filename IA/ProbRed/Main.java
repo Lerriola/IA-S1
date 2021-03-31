@@ -18,10 +18,9 @@ import java.util.Random;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-
-        //Random r = new Random();
-        //int randomseed = r.nextInt(9999);
-        ProbRedState pb = new ProbRedState(100, 4, 1234, 4321);
+        Random r = new Random();
+        int randomseed = r.nextInt(9999);
+        ProbRedState pb = new ProbRedState(100, 4, randomseed, randomseed);
 
         // Create the Problem object
         Problem p = new  Problem(pb,

@@ -13,6 +13,7 @@ public class ProbRedState{
     static CentrosDatos Cent;
 
     public static String CHANGE = "change";
+    public static String SWAP = "swap";
 
     //Adjaceny List
     private ArrayList<Integer> DAG; //LAS PRIMERAS POSICIONES SON SENSORES, LAS ULTIMAS SON CENTROS DE DATOS
@@ -260,21 +261,7 @@ public class ProbRedState{
         updateNewPath(i, New);
         return false;
     }
-/*
-    public boolean swapConexion(int S1, int S2, int S3, int S4 ){
-        updateOldPath(S1);
-        updateOldPath(S3);
-        DAG.set(S1,S4);
-        boolean tecicles = Cicles(S1);
-        if (tecicles) return true;
-        DAG.set(S3,S2);
-        tecicles = Cicles(S3);
-        if (tecicles) return true;
-        updateNewPath(S1,S4);
-        updateNewPath(S3,S2);
-        return false;
-    }
-*/
+
     public boolean swapConexion(int s1,int s2){
         updateOldPath(s1);
         updateOldPath(s2);
@@ -282,8 +269,10 @@ public class ProbRedState{
         int aux2 = DAG.get(s1);
         DAG.set(s1,aux1);
         boolean tecicles = Cicles(s1);
+        if(tecicles) return true;
+        DAG.set(s2,aux2);
         boolean tecicles2 = Cicles(s2);
-        if(tecicles || tecicles2)return true;
+        if(tecicles2)return true;
         updateNewPath(s1,aux1);
         updateNewPath(s2,aux2);
         return false;
