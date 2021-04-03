@@ -22,7 +22,7 @@ public class ProbRedSuccesorFunctionS implements SuccessorFunction {
 
         while (continua) {
             new_state = new ProbRedState(Estado);
-            if(randSens != randConnexion && !new_state.maxCapacity(randConnexion)){
+            if(randSens != randConnexion && new_state.maxCapacity(randConnexion)){
                 new_state.changeConexion(randSens,randConnexion);
                 if(!new_state.Cicles(randSens)) {
                     retval.add(new Successor("change " + randSens + " " + randConnexion, new_state));

@@ -318,11 +318,6 @@ public class ProbRedState{
                 Queue<Integer>Parents = NodeParents(k);
                 double data = Sens.get(k).getCapacidad();
                 while (!Parents.isEmpty()) {
-                    /*double capacity = Sens.get(k).getCapacidad(); //CAPACIDAD DEL ULTIMO SENSOR
-                    double dataInput = DAGData.get(OldSensor); //CONTENIDO DEL SENSOR QUE ES HIJO DEL QUE HEMOS MODIFICADO
-                    DAGData.set(k, Double.min(3 * capacity, capacity + dataInput));
-                    OldSensor = k;
-                    k = DAG.get(k);*/
                     Integer q = Parents.peek();
                     Parents.poll();
                     data += DAGData.get(q);
@@ -333,8 +328,6 @@ public class ProbRedState{
                 k = DAG.get(k);
 
             }
-            // Update old center
-            //double diff = datalast - DAGData.get(OldSensor);
             Queue<Integer> pp = NodeParents(k);
             double dTot = 0.;
             while(!pp.isEmpty()){
@@ -357,16 +350,10 @@ public class ProbRedState{
         int aux = New;
         int antaux = i;
         while (aux < Sens.size()) {
-            //System.out.println("AM STUCK");
             if (DAG.get(aux) >= Sens.size()) datalast = DAGData.get(aux);
             Queue<Integer> Parents = NodeParents(aux);
             double data = Sens.get(aux).getCapacidad();
             while(!Parents.isEmpty()) {
-           /* double capacity = Sens.get(New).getCapacidad();
-            double dataInput = DAGData.get(i);
-            DAGData.set(New, Double.min(3*capacity, DAGData.get(New)+dataInput));
-            i = New;
-            New = DAG.get(New);*/
                 Integer q = Parents.peek();
                 Parents.poll();
                 data += DAGData.get(q);
@@ -387,7 +374,6 @@ public class ProbRedState{
         }
         DAGData.set(aux, dTot);
     }
-
 
 
     public boolean maxCapacity(int pos){
