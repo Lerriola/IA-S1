@@ -1,0 +1,6 @@
+Necesario java version 11.0
+
+Ejecutar con:
+#java -jar IA-S1.jar
+
+El programa dará indicaciones para escoger número de sensores y centros de datos, algoritmo de búsqueda, semilla, etc.

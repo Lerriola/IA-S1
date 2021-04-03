@@ -152,7 +152,7 @@ public class Main {
                     new ProbRedGoalTest(),
                     new ProbRedHeuristicFunction());
 
-            Search alg = new SimulatedAnnealingSearch(10000, 1000, 5, 0.001);
+            Search alg = new SimulatedAnnealingSearch(10000, 1000, 2, 0.001);
             SearchAgent agent = new SearchAgent(p, alg);
 
             end = System.currentTimeMillis();
