@@ -22,8 +22,7 @@ public class ProbRedState{
 
     static Double costeFinal = -1.0;
     static Double lossDataPerc = -1.0;
-
-
+    
     // CONSTRUCTORS
     public ProbRedState(int nSens, int nCent, int SenSeed, int CentSeed) {
 
